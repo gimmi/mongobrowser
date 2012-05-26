@@ -22,8 +22,7 @@ Ext.define('MongoBrowser.view.Viewport', {
 			flex: 1,
 			xtype: 'textareafield',
 			itemId: 'queryfield',
-			fieldStyle: 'font-family: monospace;',
-			value: "db: 'scretch', coll: 'zips', fields: ['city', 'zip']"
+			fieldStyle: 'font-family: monospace;'
 		}, {
 			xtype: 'container',
 			layout: 'hbox',

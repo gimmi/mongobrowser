@@ -5,11 +5,7 @@ Ext.define('MongoBrowser.view.Grid', {
 	sortableColumns: false,
 	enableColumnHide: false,
 
-	columns: [
-		{ header: 'Name',  dataIndex: 'name' },
-		{ header: 'Email', dataIndex: 'email', flex: 1 },
-		{ header: 'Phone', dataIndex: 'phone' }
-	],
+	columns: [],
 
 	dockedItems: [{
 		xtype: 'pagingtoolbar',

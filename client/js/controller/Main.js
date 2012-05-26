@@ -2,6 +2,7 @@ Ext.define('MongoBrowser.controller.Main', {
 	extend: 'Ext.app.Controller',
 
 	requires: [
+		'MongoBrowser.util.SettingStorage'
 	],
 
 	refs: [
@@ -23,6 +24,16 @@ Ext.define('MongoBrowser.controller.Main', {
 	},
 
 	onLaunch: function () {
+		var queryField = this.getQueryField();
+
+		queryField.setValue(MongoBrowser.util.SettingStorage.getData([
+			"db: 'scretch',",
+			"coll: 'zips',",
+			"fields: [",
+			"   { header: 'City', dataIndex: 'city' },",
+			"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
+			"]"
+		].join('\n')));
 	},
 
 	_buildClientCfg: function (txt) {
@@ -55,7 +66,7 @@ Ext.define('MongoBrowser.controller.Main', {
 			grid = this.getGrid(),
 			pager = this.getPagingToolbar();
 
-		Ext.log({ dump: cfg });
+		MongoBrowser.util.SettingStorage.setData(cfgTxt);
 
 		var store = Ext.create('Ext.data.Store', {
 			fields: cfg.fields,
