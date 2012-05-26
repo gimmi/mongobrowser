@@ -25,32 +25,40 @@ Ext.define('MongoBrowser.controller.Main', {
 	onLaunch: function () {
 	},
 
-	_evalCfg: function (txt) {
-		var ret;
+	_buildClientCfg: function (txt) {
+		var cfg, ret = {};
 
-		eval('ret = ' + txt + ';');
+		eval(Ext.String.format('cfg = {0};', txt));
+
+		cfg.fields = Ext.Array.from(cfg.fields);
+
+		ret.columns = Ext.Array.map(cfg.fields, function (field) {
+			if (Ext.isString(field)) {
+				return { header: field, dataIndex: field };
+			}
+			return field;
+		}, this);
+
+		ret.fields = Ext.Array.map(cfg.fields, function (field) {
+			if (Ext.isString(field)) {
+				return field;
+			}
+			return field.dataIndex;
+		}, this);
 
 		return ret;
 	},
 
 	onQueryButtonClick: function () {
 		var cfgTxt = this.getQueryField().getValue() || '{}',
-			cfg = this._evalCfg(cfgTxt),
+			cfg = this._buildClientCfg(cfgTxt),
 			grid = this.getGrid(),
 			pager = this.getPagingToolbar();
 
 		Ext.log({ dump: cfg });
 
-		var columns = Ext.Array.map(cfg.fields, function (field) {
-			return { header: field, dataIndex: field };
-		}, this);
-
-		var fields = Ext.Array.map(cfg.fields, function (field) {
-			return { name: field };
-		}, this);
-
 		var store = Ext.create('Ext.data.Store', {
-			fields: fields,
+			fields: cfg.fields,
 			pageSize: 50,
 			proxy: {
 				type: 'ajax',
@@ -67,8 +75,8 @@ Ext.define('MongoBrowser.controller.Main', {
 
 		pager.bindStore(store);
 
-		grid.reconfigure(store, columns);
+		grid.reconfigure(store, cfg.columns);
 
-		store.loadPage(1);
+		store.loadPage(1, {});
 	}
 });
