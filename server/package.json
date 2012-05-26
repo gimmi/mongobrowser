@@ -1,9 +1,12 @@
 {
-	"name": "mongobrowser",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-		"express": "2.5.x",
-		"underscore": "1.3.x"
-	}
+  "name": "mongobrowser",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "2.5.x",
+    "underscore": "1.3.x"
+  },
+  "devDependencies": {
+    "jshint": "0.7.x"
+  }
 }

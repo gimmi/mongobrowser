@@ -8,7 +8,7 @@ Ext.define('MongoBrowser.controller.Main', {
 		{ ref: 'grid', selector: 'mongobrowsergrid' },
 		{ ref: 'pagingToolbar', selector: 'mongobrowsergrid pagingtoolbar' },
 		{ ref: 'queryField', selector: '#queryfield' },
-		{ ref: 'queryButton', selector: '#querybutton' },
+		{ ref: 'queryButton', selector: '#querybutton' }
 	],
 
 	init: function () {
@@ -23,9 +23,6 @@ Ext.define('MongoBrowser.controller.Main', {
 	},
 
 	onLaunch: function () {
-	},
-
-	onQueryButtonClick: function () {
 	},
 
 	readCfg: function () {
@@ -53,8 +50,6 @@ Ext.define('MongoBrowser.controller.Main', {
 		var store = Ext.create('Ext.data.Store', {
 			fields: fields,
 			pageSize: 50,
-			remoteSort: true,
-			remoteFilter: true,
 			proxy: {
 				type: 'ajax',
 				url : 'query',
