@@ -28,7 +28,7 @@ Ext.define('MongoBrowser.controller.Main', {
 	_buildClientCfg: function (txt) {
 		var cfg, ret = {};
 
-		eval(Ext.String.format('cfg = {0};', txt));
+		eval(Ext.String.format('cfg = {{0}};', txt));
 
 		cfg.fields = Ext.Array.from(cfg.fields);
 
@@ -50,7 +50,7 @@ Ext.define('MongoBrowser.controller.Main', {
 	},
 
 	onQueryButtonClick: function () {
-		var cfgTxt = this.getQueryField().getValue() || '{}',
+		var cfgTxt = this.getQueryField().getValue(),
 			cfg = this._buildClientCfg(cfgTxt),
 			grid = this.getGrid(),
 			pager = this.getPagingToolbar();

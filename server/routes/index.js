@@ -4,7 +4,7 @@ var _ = require('underscore'),
 function buildServerCfg (txt) {
 	var cfg, ret = {};
 
-	eval('cfg = ' + txt + ';');
+	eval('cfg = {' + txt + '};');
 
 	ret.server = cfg.server || 'localhost';
 	ret.port = parseInt(cfg.port || '27017', 10);
@@ -22,7 +22,7 @@ function buildServerCfg (txt) {
 
 module.exports = {
 	query: function (req, res) {
-		var cfg = buildServerCfg(req.param('cfg', '{}')),
+		var cfg = buildServerCfg(req.param('cfg', '')),
 			start = parseInt(req.param('start', '0'), 10),
 			limit = parseInt(req.param('limit', '50'), 10);
 
