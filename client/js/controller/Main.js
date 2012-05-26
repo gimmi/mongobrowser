@@ -27,12 +27,18 @@ Ext.define('MongoBrowser.controller.Main', {
 		var queryField = this.getQueryField();
 
 		queryField.setValue(MongoBrowser.util.SettingStorage.getData([
+			"server: 'localhost', // optional",
+			"port: 27017, // optional",
 			"db: 'scretch',",
 			"coll: 'zips',",
+			"filter: {},",
 			"fields: [",
+			"   'fieldName', // simplest format, just property name",
 			"   { header: 'City', dataIndex: 'city' },",
 			"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
-			"]"
+			"],",
+			"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }",
+			""
 		].join('\n')));
 	},
 

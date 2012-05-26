@@ -11,6 +11,7 @@ function buildServerCfg (txt) {
 	ret.db = cfg.db || '';
 	ret.coll = cfg.coll || '';
 	ret.filter = cfg.filter || {};
+	ret.sort = cfg.sort || {};
 
 	ret.fields = {};
 	_(cfg.fields).each(function (field) {
@@ -51,7 +52,7 @@ module.exports = {
 						db.close();
 						return;
 					}
-					coll.find(cfg.filter, {skip: start, limit: limit, fields: cfg.fields}).toArray(function (err, docs) {
+					coll.find(cfg.filter, {skip: start, limit: limit, fields: cfg.fields, sort: cfg.sort}).toArray(function (err, docs) {
 						if(err) {
 							console.log("error");
 							db.close();
