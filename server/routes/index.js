@@ -1,17 +1,33 @@
 var _ = require('underscore'),
 	mongo = require('mongodb');
 
+function getFields(req) {
+	var fields = JSON.parse(req.param('fields', '[]')),
+		ret = {};
+
+	_(fields).each(function (field) {
+		ret[field] = 1;
+	});
+
+	return ret;
+}
+
 module.exports = {
 	query: function (req, res) {
-		var start = parseInt(req.param('start', '0'), 10),
+		var server = req.param('server', 'localhost'),
+			port = parseInt(req.param('port', '27017'), 10),
+			start = parseInt(req.param('start', '0'), 10),
 			limit = parseInt(req.param('limit', '50'), 10),
-			cfg = JSON.parse(req.param('cfg', '{}'));
+			filter = JSON.parse(req.param('filter', '{}')),
+			fields = getFields(req);
 
 		console.dir(start);
 		console.dir(limit);
-		console.dir(cfg);
+		console.dir(filter);
+		console.dir(fields);
 
-		new mongo.Db('log4net', new mongo.Server('localhost', 27017, {auto_reconnect: true})).open(function(err, db) {
+
+		new mongo.Db('log4net', new mongo.Server(server, port, {auto_reconnect: true})).open(function(err, db) {
 			if(err) {
 				console.log("error");
 				return;
@@ -24,32 +40,27 @@ module.exports = {
 					return;
 				}
 
-				coll.find().toArray(function (err, docs) {
+				coll.count(filter, function (err, count) {
 					if(err) {
 						console.log("error");
 						db.close();
 						return;
 					}
+					coll.find(filter, {skip: start, limit: limit, fields: fields}).toArray(function (err, docs) {
+						if(err) {
+							console.log("error");
+							db.close();
+							return;
+						}
 
-					console.dir(docs);
+						console.dir(docs);
 
-					db.close();
+						res.json({ total: count, rows: docs });
+
+						db.close();
+					});
 				});
-
 			});
-		});
-
-		var rows = _(_.range(start, start + limit)).map(function (i) {
-			var row = {};
-			_(cfg.fields).each(function (field) {
-				row[field] = field + i;
-			}, this);
-			return row;
-		}, this);
-
-		res.json({
-			total: 1000,			
-			rows: rows
 		});
 	}
 };
