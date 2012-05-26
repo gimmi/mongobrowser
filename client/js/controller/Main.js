@@ -6,6 +6,7 @@ Ext.define('MongoBrowser.controller.Main', {
 
 	refs: [
 		{ ref: 'grid', selector: 'mongobrowsergrid' },
+		{ ref: 'pagingToolbar', selector: 'mongobrowsergrid pagingtoolbar' },
 		{ ref: 'queryField', selector: '#queryfield' },
 		{ ref: 'queryButton', selector: '#querybutton' },
 	],
@@ -36,7 +37,8 @@ Ext.define('MongoBrowser.controller.Main', {
 
 	onQueryButtonClick: function () {
 		var cfg = this.readCfg(),
-			grid = this.getGrid();
+			grid = this.getGrid(),
+			pager = this.getPagingToolbar();
 
 		Ext.log({ dump: cfg });
 
@@ -56,9 +58,17 @@ Ext.define('MongoBrowser.controller.Main', {
 			proxy: {
 				type: 'ajax',
 				url : 'query',
-				reader: 'json'
+				reader: {
+					type: 'json',
+					root: 'rows'
+				},
+				extraParams: {
+					cfg: Ext.JSON.encode(cfg)
+				}
 			}
 		});
+
+		pager.bindStore(store);
 
 		grid.reconfigure(store, columns);
 
