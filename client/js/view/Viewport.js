@@ -21,7 +21,8 @@ Ext.define('MongoBrowser.view.Viewport', {
 		items: [{
 			flex: 1,
 			xtype: 'textareafield',
-			itemId: 'queryfield'
+			itemId: 'queryfield',
+			value: "{ fields: ['f1', 'f2'] }"
 		}, {
 			xtype: 'container',
 			layout: 'hbox',

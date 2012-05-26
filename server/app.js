@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express'),
+	routes = require('./routes');
 
 var app = express.createServer();
 
@@ -19,6 +20,8 @@ app.configure('development', function() {
 app.configure('production', function() {
 	app.use(express.errorHandler());
 });
+
+app.post('/query', routes.query);
 
 app.listen(3000, function() {
 	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

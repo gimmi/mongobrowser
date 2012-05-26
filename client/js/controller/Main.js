@@ -36,8 +36,7 @@ Ext.define('MongoBrowser.controller.Main', {
 
 	onQueryButtonClick: function () {
 		var cfg = this.readCfg(),
-			grid = this.getGrid(),
-			store;
+			grid = this.getGrid();
 
 		Ext.log({ dump: cfg });
 
@@ -49,23 +48,20 @@ Ext.define('MongoBrowser.controller.Main', {
 			return { name: field };
 		}, this);
 
-		store = Ext.create('Ext.data.Store', {
+		var store = Ext.create('Ext.data.Store', {
 			fields: fields,
-			data: {
-				items: [
-					{ 'f1': 'Lisa', "f2":"lisa@simpsons.com" },
-					{ 'f1': 'Marge', "f2":"marge@simpsons.com" }
-				]
-			},
+			pageSize: 50,
+			remoteSort: true,
+			remoteFilter: true,
 			proxy: {
-				type: 'memory',
-				reader: {
-					type: 'json',
-					root: 'items'
-				}
+				type: 'ajax',
+				url : 'query',
+				reader: 'json'
 			}
 		});
 
 		grid.reconfigure(store, columns);
+
+		store.loadPage(1);
 	}
 });
