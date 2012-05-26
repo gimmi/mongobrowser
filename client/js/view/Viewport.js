@@ -1,39 +1,38 @@
 Ext.define('MongoBrowser.view.Viewport', {
 	extend: 'Ext.container.Viewport',
 
+	requires: [
+		'MongoBrowser.view.Grid'
+	],
+
 	padding: 5,
 	layout: 'border',
 
 	items: [ {
-		region: 'west',
+		region: 'north',
 		split: true,
-		xtype: 'treepanel',
-		width: 150,
-		collapsed: false,
-		collapsible: true,
-		title: 'My Tree Panel'
+		xtype: 'panel',
+		height: 200,
+		bodyPadding: 5,
+		layout: {
+			type: 'vbox',
+			align: 'stretch'
+		},
+		items: [{
+			flex: 1,
+			xtype: 'textareafield',
+			itemId: 'queryfield'
+		}, {
+			xtype: 'container',
+			layout: 'hbox',
+			items: [{
+				xtype: 'button',
+				itemId: 'querybutton',
+				text: 'run'
+			}]
+		}]
 	}, {
 		region: 'center',
-		xtype: 'panel',
-		border: 0,
-		layout: 'border',
-		items: [ {
-			region: 'center',
-			xtype: 'panel'
-		}, {
-			region: 'south',
-			split: true,
-			collapsible: true,
-			xtype: 'panel',
-			height: 150,
-			title: 'My Panel'
-		}, {
-			region: 'north',
-			split: true,
-			collapsible: true,
-			xtype: 'panel',
-			height: 150,
-			title: 'My Panel'
-		} ]
+		xtype: 'mongobrowsergrid'
 	} ]
 });
