@@ -25,15 +25,17 @@ Ext.define('MongoBrowser.controller.Main', {
 	onLaunch: function () {
 	},
 
-	readCfg: function () {
-		var json = this.getQueryField().getValue(),
-			cfg = Ext.JSON.decode(json);
+	_evalCfg: function (txt) {
+		var ret;
 
-		return cfg;
+		eval('ret = ' + txt + ';');
+
+		return ret;
 	},
 
 	onQueryButtonClick: function () {
-		var cfg = this.readCfg(),
+		var cfgTxt = this.getQueryField().getValue() || '{}',
+			cfg = this._evalCfg(cfgTxt),
 			grid = this.getGrid(),
 			pager = this.getPagingToolbar();
 
@@ -58,7 +60,7 @@ Ext.define('MongoBrowser.controller.Main', {
 					root: 'rows'
 				},
 				extraParams: {
-					cfg: Ext.JSON.encode(cfg)
+					cfg: cfgTxt
 				}
 			}
 		});

@@ -1,9 +1,8 @@
 var _ = require('underscore'),
 	mongo = require('mongodb');
 
-function getFields(req) {
-	var fields = JSON.parse(req.param('fields', '[]')),
-		ret = {};
+function getFields(fields) {
+	var ret = {};
 
 	_(fields).each(function (field) {
 		ret[field] = 1;
@@ -12,14 +11,26 @@ function getFields(req) {
 	return ret;
 }
 
+function evalCfg (req) {
+	var ret;
+
+	eval('ret = ' + req.param('cfg', '{}') + ';');
+
+	return ret;
+}
+
 module.exports = {
 	query: function (req, res) {
-		var server = req.param('server', 'localhost'),
-			port = parseInt(req.param('port', '27017'), 10),
+
+		var cfg = evalCfg(req),
 			start = parseInt(req.param('start', '0'), 10),
 			limit = parseInt(req.param('limit', '50'), 10),
-			filter = JSON.parse(req.param('filter', '{}')),
-			fields = getFields(req);
+			server = cfg.server || 'localhost',
+			port = parseInt(cfg.port || '27017', 10),
+			db = cfg.db || '',
+			coll = cfg.coll || '',
+			filter = cfg.filter || {},
+			fields = getFields(cfg.fields || []);
 
 		console.dir(start);
 		console.dir(limit);
@@ -27,13 +38,13 @@ module.exports = {
 		console.dir(fields);
 
 
-		new mongo.Db('log4net', new mongo.Server(server, port, {auto_reconnect: true})).open(function(err, db) {
+		new mongo.Db(db, new mongo.Server(server, port, {auto_reconnect: true})).open(function(err, db) {
 			if(err) {
 				console.log("error");
 				return;
 			}
 
-			db.collection('logs', {safe:true}, function(err, coll) {
+			db.collection(coll, {safe:true}, function(err, coll) {
 				if(err) {
 					console.log("error");
 					db.close();
@@ -53,7 +64,7 @@ module.exports = {
 							return;
 						}
 
-						console.dir(docs);
+						//console.dir(docs);
 
 						res.json({ total: count, rows: docs });
 
