@@ -35,26 +35,26 @@ module.exports = {
 
 		new mongo.Db(cfg.db, new mongo.Server(cfg.server, cfg.port, {auto_reconnect: true})).open(function(err, db) {
 			if(err) {
-				console.log("error");
+				res.send('Error connecting to the database: ' + err.message, 500);
 				return;
 			}
 
 			db.collection(cfg.coll, {safe:true}, function(err, coll) {
 				if(err) {
-					console.log("error");
+					res.send('Error opening collection: ' + err.message, 500);
 					db.close();
 					return;
 				}
 
 				coll.count(cfg.filter, function (err, count) {
 					if(err) {
-						console.log("error");
+						res.send('Error counting query results: ' + err.message, 500);
 						db.close();
 						return;
 					}
 					coll.find(cfg.filter, {skip: start, limit: limit, fields: cfg.fields, sort: cfg.sort}).toArray(function (err, docs) {
 						if(err) {
-							console.log("error");
+							res.send('Error executing query: ' + err.message, 500);
 							db.close();
 							return;
 						}

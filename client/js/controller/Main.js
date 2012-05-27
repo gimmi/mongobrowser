@@ -2,7 +2,8 @@ Ext.define('MongoBrowser.controller.Main', {
 	extend: 'Ext.app.Controller',
 
 	requires: [
-		'MongoBrowser.util.SettingStorage'
+		'MongoBrowser.util.SettingStorage',
+		'Ext.window.MessageBox'
 	],
 
 	refs: [
@@ -37,15 +38,20 @@ Ext.define('MongoBrowser.controller.Main', {
 			"   { header: 'City', dataIndex: 'city' },",
 			"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
 			"],",
-			"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }",
-			""
+			"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }"
 		].join('\n')));
 	},
 
 	_buildClientCfg: function (txt) {
 		var cfg, ret = {};
 
-		eval(Ext.String.format('cfg = {{0}};', txt));
+		txt = Ext.String.format('cfg = {{0}\n};', txt);
+
+		try {
+			eval(txt);
+		} catch(e) {
+			return e.toString();
+		}
 
 		cfg.fields = Ext.Array.from(cfg.fields);
 
@@ -72,6 +78,11 @@ Ext.define('MongoBrowser.controller.Main', {
 			grid = this.getGrid(),
 			pager = this.getPagingToolbar();
 
+		if (Ext.isString(cfg)) {
+			Ext.Msg.alert('Error', cfg);
+			return;
+		}
+
 		MongoBrowser.util.SettingStorage.setData(cfgTxt);
 
 		var store = Ext.create('Ext.data.Store', {
@@ -86,6 +97,10 @@ Ext.define('MongoBrowser.controller.Main', {
 				},
 				extraParams: {
 					cfg: cfgTxt
+				},
+				listeners: {
+					exception: this.onProxyException,
+					scope: this
 				}
 			}
 		});
@@ -95,5 +110,9 @@ Ext.define('MongoBrowser.controller.Main', {
 		grid.reconfigure(store, cfg.columns);
 
 		store.loadPage(1, {});
+	},
+
+	onProxyException: function (sender, resp) {
+		Ext.Msg.alert('Error', resp.responseText);
 	}
 });
