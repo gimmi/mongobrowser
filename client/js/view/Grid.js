@@ -4,6 +4,7 @@ Ext.define('MongoBrowser.view.Grid', {
 
 	sortableColumns: false,
 	enableColumnHide: false,
+	enableColumnMove: false,
 
 	columns: [],
 
