@@ -1,0 +1,8 @@
+{
+	"predef": [
+		"Ext",
+		"MongoBrowser"
+	],
+	"browser" : true,
+	"evil": true
+}
