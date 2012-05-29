@@ -25,7 +25,10 @@ Ext.define('MongoBrowser.view.Viewport', {
 			fieldStyle: 'font-family: monospace;'
 		}, {
 			xtype: 'container',
-			layout: 'hbox',
+			layout: {
+				type: 'hbox',
+				defaultMargins: { right: 5 }
+			},
 			items: [{
 				xtype: 'button',
 				itemId: 'querybutton',
