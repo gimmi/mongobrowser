@@ -30,6 +30,11 @@ Ext.define('MongoBrowser.view.Viewport', {
 				xtype: 'button',
 				itemId: 'querybutton',
 				text: 'run'
+			}, {
+				xtype: 'combo',
+				itemId: 'querycombo',
+				store: 'Queries',
+				displayField: 'name'
 			}]
 		}]
 	}, {

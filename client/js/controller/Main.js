@@ -2,15 +2,17 @@ Ext.define('MongoBrowser.controller.Main', {
 	extend: 'Ext.app.Controller',
 
 	requires: [
-		'MongoBrowser.util.SettingStorage',
 		'Ext.window.MessageBox'
 	],
+
+	stores: [ 'Queries' ],
 
 	refs: [
 		{ ref: 'grid', selector: 'mongobrowsergrid' },
 		{ ref: 'pagingToolbar', selector: 'mongobrowsergrid pagingtoolbar' },
 		{ ref: 'queryField', selector: '#queryfield' },
-		{ ref: 'queryButton', selector: '#querybutton' }
+		{ ref: 'queryButton', selector: '#querybutton' },
+		{ ref: 'queryCombo', selector: '#querycombo' }
 	],
 
 	init: function () {
@@ -25,21 +27,39 @@ Ext.define('MongoBrowser.controller.Main', {
 	},
 
 	onLaunch: function () {
-		var queryField = this.getQueryField();
+		var store = this.getQueriesStore();
 
-		queryField.setValue(MongoBrowser.util.SettingStorage.getData([
-			"server: 'localhost', // optional",
-			"port: 27017, // optional",
-			"db: 'scretch',",
-			"coll: 'zips',",
-			"filter: {},",
-			"fields: [",
-			"   'fieldName', // simplest format, just property name",
-			"   { header: 'City', dataIndex: 'city' },",
-			"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
-			"],",
-			"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }"
-		].join('\n')));
+		store.load({
+			callback: this._dataReady,
+			scope: this
+		});
+	},
+
+	_dataReady: function () {
+		var store = this.getQueriesStore();
+
+		if (store.getCount() !== 0) {
+			return;
+		}
+
+		var sample = Ext.create('MongoBrowser.model.Query', {
+			name: 'sample',
+			text: [
+				"server: 'localhost', // optional",
+				"port: 27017, // optional",
+				"db: 'scretch',",
+				"coll: 'zips',",
+				"filter: {},",
+				"fields: [",
+				"   'fieldName', // simplest format, just property name",
+				"   { header: 'City', dataIndex: 'city' },",
+				"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
+				"],",
+				"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }"
+			].join('\n')
+		});
+
+		store.add(sample);
 	},
 
 	_buildClientCfg: function (txt) {
@@ -83,7 +103,7 @@ Ext.define('MongoBrowser.controller.Main', {
 			return;
 		}
 
-		MongoBrowser.util.SettingStorage.setData(cfgTxt);
+		// TODO save query
 
 		var store = Ext.create('Ext.data.Store', {
 			fields: cfg.fields,
