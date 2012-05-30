@@ -6,7 +6,7 @@ var _ = require('underscore'),
 function buildServerCfg (txt) {
 	var cfg, ret = {};
 
-	eval('cfg = {' + txt + '};');
+	eval('cfg = {' + txt + '\n};');
 
 	ret.server = cfg.server || 'localhost';
 	ret.port = parseInt(cfg.port || '27017', 10);
