@@ -45,9 +45,7 @@ Ext.define('MongoBrowser.controller.Main', {
 		var sample = Ext.create('MongoBrowser.model.Query', {
 			name: 'sample',
 			text: [
-				"server: 'localhost', // optional",
-				"port: 27017, // optional",
-				"db: 'scretch',",
+				"url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections",
 				"coll: 'zips',",
 				"filter: {},",
 				"fields: [",

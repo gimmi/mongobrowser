@@ -8,9 +8,7 @@ function buildServerCfg (txt) {
 
 	eval('cfg = {' + txt + '\n};');
 
-	ret.server = cfg.server || 'localhost';
-	ret.port = parseInt(cfg.port || '27017', 10);
-	ret.db = cfg.db || '';
+	ret.url = cfg.url || 'mongodb://localhost:27017/default';
 	ret.coll = cfg.coll || '';
 	ret.filter = cfg.filter || {};
 	ret.sort = cfg.sort || {};
@@ -34,30 +32,29 @@ module.exports = {
 		console.dir(cfg.filter);
 		console.dir(cfg.fields);
 
-
-		new mongo.Db(cfg.db, new mongo.Server(cfg.server, cfg.port, {auto_reconnect: true})).open(function(err, db) {
+		mongo.connect(cfg.url, function(err, conn) {
 			if(err) {
 				res.send('Error connecting to the database: ' + err.message, 500);
 				return;
 			}
 
-			db.collection(cfg.coll, {safe:true}, function(err, coll) {
+			conn.collection(cfg.coll, {safe:true}, function(err, coll) {
 				if(err) {
 					res.send('Error opening collection: ' + err.message, 500);
-					db.close();
+					conn.close();
 					return;
 				}
 
 				coll.count(cfg.filter, function (err, count) {
 					if(err) {
 						res.send('Error counting query results: ' + err.message, 500);
-						db.close();
+						conn.close();
 						return;
 					}
 					coll.find(cfg.filter, {skip: start, limit: limit, fields: cfg.fields, sort: cfg.sort}).toArray(function (err, docs) {
 						if(err) {
 							res.send('Error executing query: ' + err.message, 500);
-							db.close();
+							conn.close();
 							return;
 						}
 
@@ -65,7 +62,7 @@ module.exports = {
 
 						res.json({ total: count, rows: docs });
 
-						db.close();
+						conn.close();
 					});
 				});
 			});
