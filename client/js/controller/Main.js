@@ -19,6 +19,9 @@ Ext.define('MongoBrowser.controller.Main', {
 		this.control({
 			'#querybutton': {
 				'click': this.onQueryButtonClick
+			},
+			'#querycombo': {
+				'select': this.onQueryComboSelect
 			}
 		});
 		this.application.addListener({
@@ -39,25 +42,27 @@ Ext.define('MongoBrowser.controller.Main', {
 		var store = this.getQueriesStore();
 
 		if (store.getCount() !== 0) {
-			return;
+			this.selectRecord(store.getAt(0));
+		} else {
+			store.add(Ext.create('MongoBrowser.model.Query', {
+				name: 'sample',
+				text: [
+					"url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections",
+					"coll: 'zips',",
+					"filter: {},",
+					"fields: [",
+					"   'fieldName', // simplest format, just property name",
+					"   { header: 'City', dataIndex: 'city' },",
+					"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
+					"],",
+					"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }"
+				].join('\n')
+			}));
+			store.sync({
+				success: this._dataReady,
+				scope: this
+			});
 		}
-
-		var sample = Ext.create('MongoBrowser.model.Query', {
-			name: 'sample',
-			text: [
-				"url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections",
-				"coll: 'zips',",
-				"filter: {},",
-				"fields: [",
-				"   'fieldName', // simplest format, just property name",
-				"   { header: 'City', dataIndex: 'city' },",
-				"   { header: 'Zip code', dataIndex: 'zip', flex: 1 }",
-				"],",
-				"sort: ['zip', 'city'] // optional, you can also specify direction and order with this format: { zip: -1, city: 2 }"
-			].join('\n')
-		});
-
-		store.add(sample);
 	},
 
 	_buildClientCfg: function (txt) {
@@ -132,5 +137,17 @@ Ext.define('MongoBrowser.controller.Main', {
 
 	onProxyException: function (sender, resp) {
 		Ext.Msg.alert('Error', resp.responseText);
+	},
+
+	onQueryComboSelect: function (sender, records) {
+		this.selectRecord(records[0]);
+	},
+
+	selectRecord: function (record) {
+		var field = this.getQueryField(),
+			combo = this.getQueryCombo();
+
+		combo.select(record);
+		field.setValue(record.get('text'));
 	}
 });
