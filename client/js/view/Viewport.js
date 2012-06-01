@@ -34,11 +34,13 @@ Ext.define('MongoBrowser.view.Viewport', {
 			}, {
 				xtype: 'button',
 				itemId: 'savebutton',
-				text: 'Save'
+				text: 'Save',
+				icon: 'images/disk.png'
 			}, {
 				xtype: 'button',
 				itemId: 'deletebutton',
-				text: 'Delete'
+				text: 'Delete',
+				icon: 'images/cross.png'
 			}]
 		}, {
 			flex: 1,
@@ -54,7 +56,8 @@ Ext.define('MongoBrowser.view.Viewport', {
 			items: [{
 				xtype: 'button',
 				itemId: 'querybutton',
-				text: 'Run'
+				text: 'Run',
+				icon: 'images/database_go.png'
 			}]
 		}]
 	}, {
