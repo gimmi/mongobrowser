@@ -13,16 +13,38 @@ Ext.define('MongoBrowser.view.Viewport', {
 		split: true,
 		xtype: 'panel',
 		height: 200,
-		bodyPadding: 5,
+		bodyPadding: '5 5 0 5',
 		layout: {
 			type: 'vbox',
-			align: 'stretch'
+			align: 'stretch',
+			defaultMargins: { bottom: 5 }
 		},
 		items: [{
+			xtype: 'container',
+			layout: {
+				type: 'hbox',
+				defaultMargins: { right: 5 }
+			},
+			items: [{
+				xtype: 'combo',
+				itemId: 'querycombo',
+				store: 'Queries',
+				displayField: 'name',
+				width: 400
+			}, {
+				xtype: 'button',
+				itemId: 'savebutton',
+				text: 'Save'
+			}, {
+				xtype: 'button',
+				itemId: 'deletebutton',
+				text: 'Delete'
+			}]
+		}, {
 			flex: 1,
 			xtype: 'textareafield',
 			itemId: 'queryfield',
-			fieldStyle: 'font-family: monospace;'
+			fieldStyle: 'font-family: monospace; white-space: nowrap;'
 		}, {
 			xtype: 'container',
 			layout: {
@@ -33,19 +55,6 @@ Ext.define('MongoBrowser.view.Viewport', {
 				xtype: 'button',
 				itemId: 'querybutton',
 				text: 'Run'
-			}, {
-				xtype: 'combo',
-				itemId: 'querycombo',
-				store: 'Queries',
-				displayField: 'name'
-			}, {
-				xtype: 'button',
-				itemId: 'savebutton',
-				text: 'Save'
-			}, {
-				xtype: 'button',
-				itemId: 'deletebutton',
-				text: 'Delete'
 			}]
 		}]
 	}, {
