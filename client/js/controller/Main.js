@@ -12,6 +12,8 @@ Ext.define('MongoBrowser.controller.Main', {
 		{ ref: 'pagingToolbar', selector: 'mongobrowsergrid pagingtoolbar' },
 		{ ref: 'queryField', selector: '#queryfield' },
 		{ ref: 'queryButton', selector: '#querybutton' },
+		{ ref: 'saveButton', selector: '#savebutton' },
+		{ ref: 'deleteButton', selector: '#deletebutton' },
 		{ ref: 'queryCombo', selector: '#querycombo' }
 	],
 
@@ -22,6 +24,12 @@ Ext.define('MongoBrowser.controller.Main', {
 			},
 			'#querycombo': {
 				'select': this.onQueryComboSelect
+			},
+			'#savebutton': {
+				'click': this.onSaveButtonClick
+			},
+			'#deletebutton': {
+				'click': this.onDeleteButtonClick
 			}
 		});
 		this.application.addListener({
@@ -149,5 +157,38 @@ Ext.define('MongoBrowser.controller.Main', {
 
 		combo.select(record);
 		field.setValue(record.get('text'));
+	},
+
+	onSaveButtonClick: function () {
+		var field = this.getQueryField(),
+			combo = this.getQueryCombo(),
+			store = this.getQueriesStore(),
+			value = combo.getValue(),
+			record = combo.findRecordByValue(value);
+
+		if (!record) {
+			record = Ext.create('MongoBrowser.model.Query', {
+				name: value
+			});
+			store.add(record);
+		}
+
+		record.set('text', field.getValue());
+
+		store.sync();
+	},
+
+	onDeleteButtonClick: function () {
+		var field = this.getQueryField(),
+			combo = this.getQueryCombo(),
+			store = this.getQueriesStore(),
+			value = combo.getValue(),
+			record = combo.findRecordByValue(value);
+
+		if (record) {
+			store.remove(record);
+			store.sync();
+			combo.setValue(null);
+		}
 	}
 });
