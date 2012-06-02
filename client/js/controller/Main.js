@@ -114,8 +114,6 @@ Ext.define('MongoBrowser.controller.Main', {
 			return;
 		}
 
-		// TODO save query
-
 		var store = Ext.create('Ext.data.Store', {
 			fields: cfg.fields,
 			pageSize: 50,
