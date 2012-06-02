@@ -22,6 +22,9 @@ function buildServerCfg (txt) {
 }
 
 module.exports = {
+	index: function(req, res) {
+		res.render('index', { development: req.app.settings.env === 'development' });
+	},
 	query: function (req, res) {
 		var cfg = buildServerCfg(req.param('cfg', '')),
 			start = parseInt(req.param('start', '0'), 10),
