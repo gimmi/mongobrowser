@@ -6,7 +6,11 @@ var utils = jsmake.Utils;
 var sys = jsmake.Sys;
 var javascript = new jsmake.javascript.JavascriptUtils();
 
-task('default', 'jslint');
+task('default', 'init');
+
+task('init', function () {
+	sys.run('npm.cmd', 'install', 'server');
+});
 
 task('jslint', function () {
 	var files = fs.createScanner('client')
