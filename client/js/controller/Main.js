@@ -122,6 +122,7 @@ Ext.define('MongoBrowser.controller.Main', {
 			proxy: {
 				type: 'ajax',
 				url : 'query',
+				noCache: false,
 				reader: {
 					type: 'json',
 					root: 'rows'
