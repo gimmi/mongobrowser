@@ -3,6 +3,6 @@ Ext.define('MongoBrowser.store.Queries', {
 	model: 'MongoBrowser.model.Query',
 	proxy: {
 		type: 'localstorage',
-		id  : 'queries'
+		id  : 'mongobrowser-queries'
 	}
 });
