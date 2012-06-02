@@ -6,9 +6,6 @@ var express = require('express'),
 var app = express.createServer();
 
 app.configure(function() {
-	app.set('views', __dirname + '/../client');
-	app.set('view options', { layout: false });
-	app.set('view engine', 'ejs');
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(app.router);
@@ -25,8 +22,6 @@ app.configure('development', function() {
 app.configure('production', function() {
 	app.use(express.errorHandler());
 });
-
-app.get('/', routes.index);
 
 app.get('/query', routes.query);
 
