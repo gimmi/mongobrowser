@@ -9,7 +9,6 @@ app.configure(function() {
 	app.set('views', __dirname + '/../client');
 	app.set('view options', { layout: false });
 	app.set('view engine', 'ejs');
-	app.use(express.favicon(__dirname + '/../client/images/favicon.ico'));
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(app.router);
