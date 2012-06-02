@@ -74,13 +74,15 @@ Ext.define('MongoBrowser.controller.Main', {
 	},
 
 	_buildClientCfg: function (txt) {
+		/*jslint evil: true */
+
 		var cfg, ret = {};
 
 		txt = Ext.String.format('cfg = {{0}\n};', txt);
 
 		try {
 			eval(txt);
-		} catch(e) {
+		} catch (e) {
 			return e.toString();
 		}
 
@@ -107,14 +109,15 @@ Ext.define('MongoBrowser.controller.Main', {
 		var cfgTxt = this.getQueryField().getValue(),
 			cfg = this._buildClientCfg(cfgTxt),
 			grid = this.getGrid(),
-			pager = this.getPagingToolbar();
+			pager = this.getPagingToolbar(),
+			store;
 
 		if (Ext.isString(cfg)) {
 			Ext.Msg.alert('Error', cfg);
 			return;
 		}
 
-		var store = Ext.create('Ext.data.Store', {
+		store = Ext.create('Ext.data.Store', {
 			fields: cfg.fields,
 			pageSize: 50,
 			proxy: {
