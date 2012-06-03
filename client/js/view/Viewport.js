@@ -23,6 +23,7 @@ Ext.define('MongoBrowser.view.Viewport', {
 			xtype: 'container',
 			layout: {
 				type: 'hbox',
+				align: 'middle',
 				defaultMargins: { right: 5 }
 			},
 			items: [{
@@ -41,6 +42,16 @@ Ext.define('MongoBrowser.view.Viewport', {
 				itemId: 'deletebutton',
 				text: 'Delete',
 				icon: 'images/cross.png'
+			}, {
+				xtype: 'component',
+				flex: 1
+			}, {
+				xtype: 'component',
+				autoEl: {
+					tag: 'a',
+					href: 'https://github.com/gimmi/mongobrowser',
+					html: 'About'
+				}
 			}]
 		}, {
 			flex: 1,
