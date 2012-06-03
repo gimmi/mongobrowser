@@ -9,19 +9,39 @@ var javascript = new jsmake.javascript.JavascriptUtils();
 task('default', 'init');
 
 task('init', function () {
-	sys.run('npm.cmd', 'install', 'server');
+	sys.run('cmd', '/C', '"cd server && npm install"');
 });
 
 task('jslint', function () {
-	var files = fs.createScanner('client')
+	var files, options, globals;
+
+	files = fs.createScanner('client')
 		.include('**/*.js')
 		.exclude('extjs')
 		.scan();
-	var options = { browser: true, nomen: true, sloppy: true };
-	var globals = { 'Ext': false };
+	options = { browser: true, nomen: true, sloppy: true };
+	globals = { 'Ext': false };
+	javascript.jslint(files, options, globals);
+
+	files = fs.createScanner('server')
+		.include('**/*.js')
+		.exclude('node_modules')
+		.scan();
+	options = { node: true, nomen: true };
+	globals = { };
 	javascript.jslint(files, options, globals);
 });
 
-task('release', 'jslint', function () {
-	sys.log('TODO');
+task('release', ['init', 'jslint'], function () {
+	fs.deletePath('build');
+	fs.copyPath('client', 'build/client');
+	fs.copyPath('server', 'build/server');
+	fs.writeFile('build/client/index.html', fs.readFile('build/client/index.html').replace('extjs/ext-dev.js', 'extjs/ext-all.js'));
+	fs.writeFile('build/start.cmd', [
+		'@echo off',
+		'set NODE_ENV=production',
+		'set NODE_PORT=5000',
+		'start node server/app.js',
+		'start http://localhost:%NODE_PORT%'
+	].join('\n'));
 });
