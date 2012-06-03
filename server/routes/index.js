@@ -3,7 +3,8 @@
 var _ = require('underscore'),
 	mongo = require('mongodb');
 
-function buildServerCfg (txt) {
+function buildServerCfg(txt) {
+	/*jslint evil: true */
 	var cfg, ret = {};
 
 	eval('cfg = {' + txt + '\n};');
@@ -15,7 +16,7 @@ function buildServerCfg (txt) {
 
 	ret.fields = {};
 	_(cfg.fields).each(function (field) {
-		ret.fields[_.isString(field) ? field : field.dataIndex ] = 1;
+		ret.fields[_.isString(field) ? field : field.dataIndex] = 1;
 	});
 
 	return ret;
@@ -32,27 +33,27 @@ module.exports = {
 		console.dir(cfg.filter);
 		console.dir(cfg.fields);
 
-		mongo.connect(cfg.url, function(err, conn) {
-			if(err) {
+		mongo.connect(cfg.url, function (err, conn) {
+			if (err) {
 				res.send('Error connecting to the database: ' + err.message, 500);
 				return;
 			}
 
-			conn.collection(cfg.coll, {safe:true}, function(err, coll) {
-				if(err) {
+			conn.collection(cfg.coll, {safe: true}, function (err, coll) {
+				if (err) {
 					res.send('Error opening collection: ' + err.message, 500);
 					conn.close();
 					return;
 				}
 
 				coll.count(cfg.filter, function (err, count) {
-					if(err) {
+					if (err) {
 						res.send('Error counting query results: ' + err.message, 500);
 						conn.close();
 						return;
 					}
 					coll.find(cfg.filter, {skip: start, limit: limit, fields: cfg.fields, sort: cfg.sort}).toArray(function (err, docs) {
-						if(err) {
+						if (err) {
 							res.send('Error executing query: ' + err.message, 500);
 							conn.close();
 							return;
