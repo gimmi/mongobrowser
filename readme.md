@@ -43,7 +43,7 @@ sort: ['zip', 'city']
 ```
 
 ```javascript
-url: 'mongodb://username:password@server1:27017,server2:27017,server3:27017/database?replicaSet=ReplicaSetName', // see www.mongodb.org/display/DOCS/Connections
+url: 'mongodb://username:password@server1:27017,server2:27017,server3:27017/database?replicaSet=ReplicaSetName',
 coll: 'logs',
 filter: { application: 'AppName', environment: 'dev' },
 fields: [
