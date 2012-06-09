@@ -17,15 +17,19 @@ property3: { other: 'value' }
 The curently supported properties are:
 
 * **url**: a MongoDB connection string, see [MongoDB documentation](http://www.mongodb.org/display/DOCS/Connections) for format
+* **coll**: The collection to query
+* **filters**: Query filter as specified in MongoDB documentation
+* **fields**: The fields to return, along with ExtJS specific layout information. See ExtJS Grid Column documentation
+* **sort**: Query sort as specified in MongoDB documentation
 
 ## Sample queries
 
 ```javascript
-url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections
+url: 'mongodb://localhost:27017/default',
 coll: 'zips',
 filter: {},
 fields: [
-   'fieldName', // simplest format, just property name
+   'fieldName',
    { header: 'City', dataIndex: 'city' },
    { header: 'Zip code', dataIndex: 'zip', flex: 1 }
 ],
