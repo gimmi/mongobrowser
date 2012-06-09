@@ -1,5 +1,10 @@
 # MongoBrowser
 
+A minimal Web UI to query MongoDB data
+
+
+![Screenshot](gimmi.github.com/mongobrowser/images/screenshot.png)
+
 ```javascript
 url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections
 coll: 'zips',
