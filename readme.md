@@ -1,9 +1,24 @@
 # MongoBrowser
 
-A minimal Web UI to query MongoDB data
-
+## A minimal Web UI to query MongoDB data
 
 ![Screenshot](https://github.com/gimmi/mongobrowser/raw/master/screenshot.png)
+
+## Query syntax
+
+MongoBrowser query definition is a Javascript object literal in this form:
+
+```javascript
+property1: 'value1',
+property2: true,
+property3: { other: 'value' }
+```
+
+The curently supported properties are:
+
+* **url**: a MongoDB connection string, see [MongoDB documentation](http://www.mongodb.org/display/DOCS/Connections) for format
+
+## Sample queries
 
 ```javascript
 url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections
