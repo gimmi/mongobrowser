@@ -18,11 +18,11 @@ property3: { other: 'value' }
 
 The curently supported properties are:
 
-* **url**: a MongoDB connection string, see [MongoDB documentation](http://www.mongodb.org/display/DOCS/Connections) for format
+* **url**: a MongoDB connection string, see [this MongoDB doc](http://www.mongodb.org/display/DOCS/Connections)
 * **coll**: The collection to query
-* **filters**: Query filter as specified in MongoDB documentation
-* **fields**: The fields to return, along with ExtJS specific layout information. See ExtJS Grid Column documentation
-* **sort**: Query sort as specified in MongoDB documentation
+* **filters**: Query filter object, see [this MongoDB doc](http://www.mongodb.org/display/DOCS/Advanced+Queries)
+* **fields**: The grid column configuration and layout, using ExtJS specific layout information. See [ExtJS Grid doc](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.Panel-cfg-columns) and [ExtJS Grid Column doc](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column)
+* **sort**: Query sort object/array, see [this MongoDB doc](http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%7B%7Bsort%28%29%7D%7D)
 
 ## Sample queries
 
