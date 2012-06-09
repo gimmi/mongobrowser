@@ -6,6 +6,10 @@
 
 ![Screenshot](https://github.com/gimmi/mongobrowser/raw/master/screenshot.png)
 
+## Installation
+
+TODO
+
 ## Query syntax
 
 MongoBrowser query definition is a Javascript object literal in this form:
