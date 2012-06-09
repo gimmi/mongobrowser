@@ -52,3 +52,7 @@ fields: [
 ],
 sort: { timestamp: -1 }
 ```
+
+## Credits/License
+
+See [license file](https://raw.github.com/gimmi/mongobrowser/master/license.txt)
