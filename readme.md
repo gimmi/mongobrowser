@@ -1,6 +1,8 @@
 # MongoBrowser
 
-## A minimal Web UI to query MongoDB data
+### A minimal Web UI to query MongoDB data
+
+## Screenshot
 
 ![Screenshot](https://github.com/gimmi/mongobrowser/raw/master/screenshot.png)
 
