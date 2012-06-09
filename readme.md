@@ -8,7 +8,9 @@
 
 ## Installation
 
-TODO
+* If not already installed, install [NodeJS](http://nodejs.org/#download)
+* Download the latest version of MongoBrowser [HERE](https://github.com/gimmi/mongobrowser/downloads)
+* Unzip and run `start.cmd` (windows only)
 
 ## Query syntax
 
