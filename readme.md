@@ -1,3 +1,6 @@
+# MongoBrowser
+
+```javascript
 url: 'mongodb://localhost:27017/default', // see www.mongodb.org/display/DOCS/Connections
 coll: 'zips',
 filter: {},
@@ -7,7 +10,9 @@ fields: [
    { header: 'Zip code', dataIndex: 'zip', flex: 1 }
 ],
 sort: ['zip', 'city']
+```
 
+```javascript
 url: 'mongodb://username:password@server1:27017,server2:27017,server3:27017/database?replicaSet=ReplicaSetName', // see www.mongodb.org/display/DOCS/Connections
 coll: 'logs',
 filter: { application: 'AppName', environment: 'dev' },
@@ -20,3 +25,4 @@ fields: [
    { header: 'Exception', dataIndex: 'exception' }
 ],
 sort: { timestamp: -1 }
+```
