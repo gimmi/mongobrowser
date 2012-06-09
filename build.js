@@ -33,6 +33,8 @@ task('jslint', function () {
 });
 
 task('release', ['init', 'jslint'], function () {
+	var version = JSON.parse(fs.readFile('version.json'));
+
 	fs.deletePath('build');
 	fs.copyPath('client', 'build/client');
 	fs.copyPath('server', 'build/server');
@@ -44,4 +46,10 @@ task('release', ['init', 'jslint'], function () {
 		'start node server/app.js',
 		'start http://localhost:%NODE_PORT%'
 	].join('\n'));
+	
+	fs.zipPath('build', 'mongobrowser-' + [ version.major, version.minor, version.patch ].join('.') + '.zip');
+
+	
+	version.patch += 1;
+	fs.writeFile('version.json', JSON.stringify(version));
 });
